@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistema de Control Escolar para Cursos y Diplomados</title>
+
+<!-- ================= Favicon ================== -->
+<!-- Standard -->
+<link rel="shortcut icon" href="img/favicon.ico">
+
+<!-- Styles -->
+<link href="/css/lib/select2/select2.min.css" rel="stylesheet">
+<link href="/css/lib/font-awesome.min.css" rel="stylesheet">
+<link href="/css/lib/themify-icons.css" rel="stylesheet">
+<link href="/css/lib/data-table/buttons.bootstrap.min.css" rel="stylesheet" />
+<link href="/css/lib/menubar/sidebar.css" rel="stylesheet">
+<link href="/css/lib/bootstrap.min.css" rel="stylesheet">
+<link href="/css/lib/helper.css" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<style>
+    .disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+	</style>
+</head>
+
+<body>
+	<div th:replace="/includes/head.html :: head_div1" />
+	<div th:replace="/includes/head.html :: head_div2" />
+
+	<!-- START CONTENTS -->
+	<div class="content-wrap">
+		<div class="main">
+			<div class="container-fluid">
+				
+				<!-- START CUERPO HTML -->
+				<section id="main-content">
+					<div class="row">
+						<div class="col-lg-11">
+						
+							<!-- START OPCIONES DE CONSULTA: EXPORTAR Y DESCARGAR -->
+							<div class="card">
+								<div class="row">
+									<div class="col-sm-4"><p class="font-weight-light">Exportar historial: </p></div>
+									<div class="col-sm-5"><p class="font-weight-light" th:text="'Descargar documentos de ' + ${nombre} + ' ' + ${apellido_paterno}"></p></div>
+								</div>
+								
+								<div class="row">
+									<div class="dt-buttons col-sm-4">
+										<a id="BtnExportCSV" class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="bootstrap-data-table-export" href="#">
+											<span>CSV</span>
+										</a>
+										<a id="BtnExportExcel" class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="bootstrap-data-table-export" href="#">
+											<span>Excel</span>
+										</a>
+										<a class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="bootstrap-data-table-export" href="javascript:ReportePDF()">
+											<span>PDF</span>
+										</a>
+									</div>
+									<div class="dt-buttons col-sm-5">
+										<!-- Botón Descargar CURP -->
+										<td th:if="${controller.existeDocumento(id_profesor, 1)}">
+											<a id="BtnDownloadCURP" class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="bootstrap-data-table-export" th:href="@{/descargas(id=${id_profesor},tipo='curp')}" target="_blank">
+												CURP
+											</a>
+										</td>
+										<td th:unless="${controller.existeDocumento(id_profesor, 1)}">
+											<a id="BtnDownloadCURP" class="dt-button buttons-csv buttons-html5 disabled" tabindex="0" aria-controls="bootstrap-data-table-export" disabled>
+												CURP
+											</a>
+										</td>
+										<!-- Botón Descargar RFC -->
+										<td th:if="${controller.existeDocumento(id_profesor, 2)}">
+											<a id="BtnDownloadRFC" class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="bootstrap-data-table-export" th:href="@{/descargas(id=${id_profesor},tipo='rfc')}" target="_blank">
+												RFC
+											</a>
+										</td>
+										<td th:unless="${controller.existeDocumento(id_profesor, 2)}">
+											<a id="BtnDownloadRFC" class="dt-button buttons-csv buttons-html5 disabled" tabindex="0" aria-controls="bootstrap-data-table-export" disabled>
+												RFC
+											</a>
+										</td>
+										<!-- Botón Descargar Comprobante de Domicilio -->
+										<td th:if="${controller.existeDocumento(id_profesor, 3)}">
+											<a id="BtnDownloadCompDoc" class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="bootstrap-data-table-export" th:href="@{/descargas(id=${id_profesor},tipo='comprobante')}" target="_blank">
+												Comprobante de Domicilio
+											</a>
+										</td>
+										<td th:unless="${controller.existeDocumento(id_profesor, 3)}">
+											<a id="BtnDownloadCompDoc" class="dt-button buttons-csv buttons-html5 disabled" tabindex="0" aria-controls="bootstrap-data-table-export" disabled>
+												Comprobante de Domicilio
+											</a>
+										</td>
+									</div>
+									
+									<div class="dt-buttons col-sm-2">
+										<td>
+											<button class="dt-button buttons-csv buttons-html5" onClick="history.go(-2)">Regresar al panel de búsqueda</button>
+										</td>
+									</div>
+									
+								</div>
+							</div>
+							<!-- END OPCIONES DE CONSULTA: EXPORTAR Y DESCARGAR -->
+							
+							<!-- START INFORMACIÓN DEL PROFESOR -->
+							<div class="card" id="info_profesor">
+							
+								<!-- START DATOS DEL PROFESOR -->
+								<div class="form-group">
+									<div class="row">
+										<div class="col-sm-6">
+											<h2 class="card-title font-weight-bold" th:text="${nombre} + ' ' + ${apellido_paterno} + ' ' + ${apellido_materno}" id="nombre"></h2>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6">
+											<h4 class="card-title font-weight-light" th:text="${escolaridad}" id="escolaridad"></h4>
+										</div>
+									</div>
+								</div>
+								
+								<div class="card-body">
+									<div class="row">
+										<div class="col-sm-3"><p class="font-weight-bold">CURP: </p></div>
+										<div class="col-sm-3"><p class="font-weight-light" th:text="${curp}" id="curp_info">No disponible</p></div>
+										<div class="col-sm-3"><p class="font-weight-bold">RFC: </p></div>
+										<div class="col-sm-3"><p class="font-weight-light" th:text="${rfc}" id="rfc_info">No disponible</p></div>
+									</div>
+									
+									<div class="row">
+										<div class="col-sm-3"><p class="font-weight-bold">Género: </p></div>
+										<div class="col-sm-3"><p class="font-weight-light" th:text="${genero}" id="genero_info">No disponible</p></div>
+										<div class="col-sm-3"><p class="font-weight-bold">Fecha de Nacimiento: </p></div>
+										<div class="col-sm-3"><p class="font-weight-light" th:text="${fecha_nac}" id="fecha_nac_info">No disponible</p></div>
+									</div>
+									
+									<div class="row">
+										<div class="col-sm-3"><p class="font-weight-bold">Correo: </p></div>
+										<div class="col-sm-3"><p class="font-weight-light" th:text="${correo}" id="correo_info">No disponible</p></div>
+										<div class="col-sm-3"><p class="font-weight-bold">Teléfono: </p></div>
+										<div class="col-sm-3"><p class="font-weight-light" th:text="${telefono}" id="telefono_info">No disponible</p></div>
+									</div>
+									
+									<div class="row">
+										<div class="col-sm-3"><p class="font-weight-bold">Localidad: </p></div>
+										<div class="col-sm-3"><p class="font-weight-light" th:text="${localidad}" id="localidad_info">No disponible</p></div>
+									</div>
+									
+									<div class="row">
+										<div class="col-sm-2"><p class="font-weight-bold">Plantel: </p></div>
+										<div class="col-sm-2"><p class="font-weight-light" th:text="${plantel}" id="plantel_info">No disponible</p></div>
+										<div class="col-sm-2"><p class="font-weight-bold">Clave: </p></div>
+										<div class="col-sm-2"><p class="font-weight-light" th:text="${clave_plantel}" id="clave_plantel_info">No disponible</p></div>
+										<div class="col-sm-2"><p class="font-weight-bold">Turno: </p></div>
+										<div class="col-sm-2"><p class="font-weight-light" th:text="${turno}" id="turno_info">No disponible</p></div>
+									</div>
+								</div>
+								<!-- END DATOS DEL PROFESOR -->
+							
+								<!-- START INSCRIPCIONES DEL PROFESOR -->
+								<div class="card-body" id="ins_profesor">
+									<div class="table-responsive">
+										<table class="table table-striped table-bordered" id="tabla_inscripciones">
+											<thead class="thead-light">
+												<tr>
+													<th>Rol</th>
+													<th>Tipo de Curso</th>
+													<th>Curso</th>
+													<th>Grupo</th>
+													<th>Fecha de Inicio</th>
+													<th>Fecha de Término</th>
+													<th>Calificación</th>
+													<th>Certificado</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr data-th-each="grupo : ${grupo}">
+													<td>Asesor</td>
+													<td data-th-text="${grupo?.fk_id_curso?.fk_id_tipo_curso?.nombre}">Tipo de curso</td>
+													<td data-th-text="${grupo?.fk_id_curso?.nombre}">Curso</td>
+													<td data-th-text="${grupo?.clave}">Grupo</td>
+													<td data-th-text="${#dates.format(grupo?.fecha_inicio,'dd MMMM yyyy')}">Text ...</td>
+													<td data-th-text="${#dates.format(grupo?.fecha_fin,'dd MMMM yyyy')}">Text ...</td>
+													<td>----------</td>
+													<td>----------</td>
+												</tr>
+												<tr data-th-each="ins : ${ins}">
+													<td>Profesor</td>
+													<td data-th-text="${ins?.fk_id_grupo?.fk_id_curso?.fk_id_tipo_curso?.nombre}">Tipo de curso</td>
+													<td data-th-text="${ins?.fk_id_grupo?.fk_id_curso?.nombre}">Curso</td>
+													<td data-th-text="${ins?.fk_id_grupo?.clave}">Grupo</td>
+													<td data-th-text="${#dates.format(ins?.fk_id_grupo?.fecha_inicio,'dd MMMM yyyy')}">Text ...</td>
+													<td data-th-text="${#dates.format(ins?.fk_id_grupo?.fecha_fin,'dd MMMM yyyy')}">Text ...</td>
+													<td data-th-text="${ins?.calif}">Calificación</td>
+													<td th:if="${controller.existeCertificado(id_profesor, ins.fk_id_grupo.fk_id_curso.pk_id_curso, ins.fk_id_grupo.pk_id_grupo)}">
+                                                		<a th:href="@{/descargas(id=${controller.getCertificado(id_profesor, ins.fk_id_grupo.fk_id_curso.pk_id_curso, ins.fk_id_grupo.pk_id_grupo)}, tipo='certificadoqr')}" target="_blank" >Descargar</a>
+                                                	</td>
+                                                	<td th:unless="${controller.existeCertificado(id_profesor, ins.fk_id_grupo.fk_id_curso.pk_id_curso, ins.fk_id_grupo.pk_id_grupo)}">
+                                                		<a>Descargar</a>
+                                                	</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!-- END INSCRIPCIONES DEL PROFESOR -->
+							</div>
+							<!-- END INFORMACIÓN DEL PROFESOR -->
+						</div>
+					</div>
+				</section>
+				<!-- END CUERPO HTML -->
+				
+				<!-- START DERECHOS -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="footer">
+							<p>2019 © SICCED</p>
+						</div>
+					</div>
+				</div>
+				<!-- END DERECHOS -->
+				
+			</div>
+		</div>
+	</div>
+	<!-- END CONTENTS -->
+
+	<!-- jquery vendor -->
+	<script src="/js/lib/jquery.min.js"></script>
+	<script src="/js/lib/jquery.nanoscroller.min.js"></script>
+	<!-- nano scroller -->
+	<script src="/js/lib/menubar/sidebar.js"></script>
+	<script src="/js/lib/preloader/pace.min.js"></script>
+	<!-- sidebar -->
+	<!-- bootstrap -->
+	<script src="/js/lib/bootstrap.min.js"></script>
+	<script src="/js/scripts.js"></script>
+	<script src="/js/scripts.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+	<script src="/js/reports/export-pdf-button.js"></script>
+	<script th:inline="javascript">
+	$("#BtnExportExcel").click(function(e, tabla) {
+		/*<![CDATA[*/ var nombre = [[${nombre}]]; /*]]>*/
+		/*<![CDATA[*/ var appat = [[${apellido_paterno}]]; /*]]>*/
+		/*<![CDATA[*/ var apmat = [[${apellido_materno}]]; /*]]>*/
+		/*<![CDATA[*/ var curp = [[${curp}]]; /*]]>*/
+		/*<![CDATA[*/ var rfc = [[${rfc}]]; /*]]>*/
+		/*<![CDATA[*/ var genero = [[${genero}]]; /*]]>*/
+		/*<![CDATA[*/ var fecha_nac = [[${fecha_nac}]]; /*]]>*/
+		/*<![CDATA[*/ var plantel = [[${plantel}]]; /*]]>*/
+		/*<![CDATA[*/ var clave_plantel = [[${clave_plantel}]]; /*]]>*/
+		/*<![CDATA[*/ var escolaridad = [[${escolaridad}]]; /*]]>*/
+		/*<![CDATA[*/ var turno = [[${turno}]]; /*]]>*/
+		/*<![CDATA[*/ var correo = [[${correo}]]; /*]]>*/
+		/*<![CDATA[*/ var telefono = [[${telefono}]]; /*]]>*/
+		/*<![CDATA[*/ var localidad = [[${localidad}]]; /*]]>*/
+		
+		if (apmat == null) {
+			apmat = "";
+		}
+		
+		if (curp == null) {
+			curp = "";
+		}
+		
+		if (fecha_nac == null) {
+			fecha_nac = "";
+		}
+		
+		if (plantel == null) {
+			plantel = "";
+		}
+		
+		if (clave_plantel == null) {
+			clave_plantel = "";
+		}
+		
+		if (correo == null) {
+			correo = "";
+		}
+		
+		if (telefono == null) {
+			telefono = "";
+		}
+		
+		var f = new Date();
+		var date = f.getDate() + "-" + (f.getMonth() +1) + "-" + f.getFullYear()
+		var archivo = "Historial_"+nombre + "-" + appat +"_" + date + ".xls";
+		
+		var clone = $("#tabla_inscripciones").clone();
+		var trs = clone.find('tr');
+        $.each(trs, function(i, tr) {
+          $(tr).find('td:eq(7)').remove(); 
+        });
+        var htmlExport = clone.prop('outerHTML');
+		
+		var file = new Blob(
+				["\ufeff","<p>Historial - " + $('#nombre').html()+"</p>",
+					"<p>Grado de Estudios: "+escolaridad+"<br>",
+					"CURP: "+curp+" " + "<br>",
+					"RFC: "+rfc+"<br>",
+					"Género: "+genero+"<br>",
+					"Fecha Nac: "+fecha_nac+"<br>",
+					"Correo: "+correo+"<br>",
+					"Telefono: "+telefono+"<br>",
+					"Localidad: "+localidad+"</p>",
+					"Plantel: "+plantel+"<br>",
+					"Clave: "+clave_plantel+"<br>",
+					"Turno: "+turno+"</p>",
+					htmlExport],
+				{type:"application/vnd.ms-excel"});
+		var url = URL.createObjectURL(file);
+		var a = $("<a />", {
+			href: url,
+			download: archivo}).appendTo("body").get(0).click();
+		e.preventDefault();
+	});
+	
+	$("#BtnExportCSV").click(function(e) {
+		/*<![CDATA[*/ var nombre = [[${nombre}]]; /*]]>*/
+		/*<![CDATA[*/ var appat = [[${apellido_paterno}]]; /*]]>*/
+		/*<![CDATA[*/ var apmat = [[${apellido_materno}]]; /*]]>*/
+		/*<![CDATA[*/ var curp = [[${curp}]]; /*]]>*/
+		/*<![CDATA[*/ var rfc = [[${rfc}]]; /*]]>*/
+		/*<![CDATA[*/ var genero = [[${genero}]]; /*]]>*/
+		/*<![CDATA[*/ var fecha_nac = [[${fecha_nac}]]; /*]]>*/
+		/*<![CDATA[*/ var plantel = [[${plantel}]]; /*]]>*/
+		/*<![CDATA[*/ var clave_plantel = [[${clave_plantel}]]; /*]]>*/
+		/*<![CDATA[*/ var escolaridad = [[${escolaridad}]]; /*]]>*/
+		/*<![CDATA[*/ var turno = [[${turno}]]; /*]]>*/
+		/*<![CDATA[*/ var correo = [[${correo}]]; /*]]>*/
+		/*<![CDATA[*/ var telefono = [[${telefono}]]; /*]]>*/
+		/*<![CDATA[*/ var localidad = [[${localidad}]]; /*]]>*/
+		
+		if (apmat == null) {
+			apmat = "";
+		}
+		
+		if (curp == null) {
+			curp = "";
+		}
+		
+		if (fecha_nac == null) {
+			fecha_nac = "";
+		}
+		
+		if (plantel == null) {
+			plantel = "";
+		}
+		
+		if (clave_plantel == null) {
+			clave_plantel = "";
+		}
+		
+		if (correo == null) {
+			correo = "";
+		}
+		
+		if (telefono == null) {
+			telefono = "";
+		}
+		
+		var f = new Date();
+		var date = f.getDate() + "-" + (f.getMonth() +1) + "-" + f.getFullYear()
+		var archivo = "Historial_"+nombre + "-" + appat +"_" + date + ".csv";
+		
+		var historial = [];
+		var rows = document.querySelectorAll("table tr");
+		
+		for (var i = 0; i < rows.length-1; i++){
+			var row = [], cols = rows[i].querySelectorAll("td, th");
+			
+			for (var j = 0; j < cols.length; j++) {
+				row.push(cols[j].innerText);
+			}
+			
+			historial.push(row.join(","));
+		}
+		
+		var file = new Blob(
+				["\ufeff",
+					"Historial - " + nombre + " " + appat + " " + apmat + "\n\n",
+					"Grado de Estudios:," + escolaridad + "\n",
+					"CURP:," + curp + ", , ," + "RFC:,"+ rfc + "\n",
+					"Genero:," + genero + ", , ," + "Fecha de Nacimiento:,"+ fecha_nac + "\n",
+					"Correo:," + correo + ", , ," + "Teléfono:,"+ telefono + "\n",
+					"Localidad:, "+ localidad + "\n",
+					"Plantel:," + plantel + ", , ," + "Clave del Plantel:,"+ clave_plantel + "\n",
+					"Turno:,"+ turno + "\n\n",
+					historial.join("\n")],
+				{type:"text/csv"});
+		var url = URL.createObjectURL(file);
+		var a = $("<a />", {
+			href: url,
+			download: archivo}).appendTo("body").get(0).click();
+		e.preventDefault();
+	});
+	</script>
+</body>

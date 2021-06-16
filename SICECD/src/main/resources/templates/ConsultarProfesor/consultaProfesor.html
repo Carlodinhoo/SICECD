@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistema de Control Escolar para Cursos y Diplomados</title>
+
+<!-- ================= Favicon ================== -->
+<!-- Standard -->
+<link rel="shortcut icon" href="img/favicon.ico">
+
+<!-- Styles -->
+<link href="css/lib/select2/select2.min.css" rel="stylesheet">
+<link href="css/lib/font-awesome.min.css" rel="stylesheet">
+<link href="css/lib/themify-icons.css" rel="stylesheet">
+<link href="css/lib/menubar/sidebar.css" rel="stylesheet">
+<link href="css/lib/bootstrap.min.css" rel="stylesheet">
+<link href="css/lib/helper.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+	<div th:replace="/includes/head.html :: head_div1" />
+	<div th:replace="/includes/head.html :: head_div2" />
+
+	<!-- START CONTENTS -->
+	<div class="content-wrap">
+		<div class="main">
+			<div class="container-fluid">
+				<section id="main-content">
+					
+					<!-- START ROW -->
+					<div class="row">
+						
+						<!-- START CONSULTAR PROFESOR PERSONALIZADO -->
+						<div class="col-lg-6">
+							<div class="card">
+								<div class="card-body">
+									<div class="basic-form">
+										<form action="/consultaProfesor" method="post">
+											<div class="form-group">
+												<h4>Consulta de Profesores</h4>
+												<label>CURP</label>
+													<input type="text" class="form-control" name="curp" maxlength="18">
+												<label>RFC</label>
+													<input type="text" class="form-control" name="rfc" maxlength="13">
+												<label>Nombre</label>
+													<input type="text" name="nombre" class="form-control">
+												<label>Apellido Paterno</label>
+													<input type="text" name="apellido_paterno" class="form-control">
+												<label>Apellido Materno</label>
+													<input type="text" name="apellido_materno" class="form-control">
+												<label>Grado de estudios</label>
+													<select name="grado_estudios" class="form-control">
+														<option value="5">Sin definir</option>
+														<option value="1">Licenciatura</option>
+														<option value="2">Especialidad</option>
+														<option value="3">Maestría</option>
+														<option value="4">Doctorado</option>
+													</select>
+												<label>Estado</label>
+													<select name="estados" class="form-control">
+														<option value="33">Sin definir</option>
+														<option value="1">Aguascalientes</option>
+														<option value="2">Baja California</option>
+														<option value="3">Baja California Sur</option>
+														<option value="4">Campeche</option>
+														<option value="5">Ciudad de México</option>
+														<option value="6">Coahuila</option>
+														<option value="7">Colima</option>
+														<option value="8">Chiapas</option>
+														<option value="9">Chihuahua</option>
+														<option value="10">Durango</option>
+														<option value="11">Estado de México</option>
+														<option value="12">Guanajuato</option>
+														<option value="13">Guerrero</option>
+														<option value="14">Hidalgo</option>
+														<option value="15">Jalisco</option>
+														<option value="16">Michoacán</option>
+														<option value="17">Morelos</option>
+														<option value="18">Nayarit</option>
+														<option value="19">Nuevo León</option>
+														<option value="20">Oaxaca</option>
+														<option value="21">Puebla</option>
+														<option value="22">Querétaro</option>
+														<option value="23">Quintana Roo</option>
+														<option value="24">San Luis Potosí</option>
+														<option value="25">Sinaloa</option>
+														<option value="26">Sonora</option>
+														<option value="27">Tabasco</option>
+														<option value="28">Tamaulipas</option>
+														<option value="29">Tlaxcala</option>
+														<option value="30">Veracruz</option>
+														<option value="31">Yucatán</option>
+														<option value="32">Zacatecas</option>
+													</select>
+													
+												<label>Género</label>
+                                                    <select name="genero" class="form-control">
+                                                    	<option value="3">Sin definir</option>
+                                                        <option value="1">Masculino</option>
+														<option value="2">Femenino</option>
+                                                    </select>
+                                                <label>Turno</label>
+                                                    <select name="turno" class="form-control">
+                                                    	<option value="4">Sin definir</option>
+                                                        <option value="1">Matutino</option>
+														<option value="2">Vespertino</option>
+														<option value="3">Completo</option>
+                                                    </select>
+											</div>
+											<div>
+												<button id="btn-limpiar" type="reset" class="btn btn-default">Limpiar Búsqueda</button>
+												<button id="btn-consultar" type="submit" class="btn btn-default">Consultar</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- END CONSULTAR PROFESOR PERSONALIZADO -->
+						
+					</div>
+					<!-- END ROW -->
+				</section>
+				
+				<!-- START DERECHOS -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="footer">
+							<p>2018 © SICCED</p>
+						</div>
+					</div>
+				</div>
+				<!-- END DERECHOS -->
+				
+            </div>
+        </div>
+    </div>
+	<!-- END CONTENTS -->
+
+	<!-- jquery vendor -->
+	<script src="js/lib/jquery.min.js"></script>
+	<script src="js/lib/jquery.nanoscroller.min.js"></script>
+	<!-- nano scroller -->
+	<script src="js/lib/menubar/sidebar.js"></script>
+	<script src="js/lib/preloader/pace.min.js"></script>
+	<!-- sidebar -->
+	<!-- bootstrap -->
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/scripts.js"></script>
+</body>
+</html>

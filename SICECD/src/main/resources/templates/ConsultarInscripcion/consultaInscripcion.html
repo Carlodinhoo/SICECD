@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistema de Control Escolar para Cursos y Diplomados</title>
+
+<!-- ================= Favicon ================== -->
+<!-- Standard -->
+<link rel="shortcut icon" href="img/favicon.ico">
+
+<!-- Styles -->
+<link href="css/lib/select2/select2.min.css" rel="stylesheet">
+<link href="css/lib/font-awesome.min.css" rel="stylesheet">
+<link href="css/lib/themify-icons.css" rel="stylesheet">
+<link href="css/lib/menubar/sidebar.css" rel="stylesheet">
+<link href="css/lib/bootstrap.min.css" rel="stylesheet">
+<link href="css/lib/helper.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+	<div th:replace="/includes/head.html :: head_div1" />
+	<div th:replace="/includes/head.html :: head_div2" />
+
+	<!-- START CONTENTS -->
+	<div class="content-wrap">
+		<div class="container-fluid">
+			<section>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<form action="/consultaInscripciones" method="post">
+							<h4>Consulta Inscripciones</h4>
+							<div class="panel panel-danger">
+							   		<div class="row">
+							   			<!-- START DATOS DEL CURSO -->
+							   			<div class="col-lg-3">
+							   				<div class="panel-body">
+							   					<label>Clave del Curso</label>
+							   					<input type="text" name="clave_curso" class="form-control">
+							   				</div>
+							   			</div>
+							   			<div class="col-lg-3">
+							   				<div class="panel-body">
+							   					<label>Nombre del Curso</label>
+							   					<input type="text" name="nombre_curso" class="form-control">
+							   				</div>
+							   			</div>
+							   			<div class="col-lg-3">
+							   				<div class="panel-body">
+							   					<label>Tipo de Curso</label>
+                                                    <select name="tipos" class="form-control">
+                                                    	<option value="0">Sin definir</option>
+														<option value="1">Curso</option>
+														<option value="2">Diplomado</option>
+														<option value="3">Especialidad</option>
+														<option value="4">Maestría</option>
+														<option value="5">Doctorado</option>
+                                                    </select>
+							   				</div>
+							   			</div>
+							   			<!-- END DATOS DEL CURSO -->
+							   			<!-- START DATOS DEL GRUPO -->
+							   			<div class="col-lg-3">
+							   				<div class="panel-body">
+							   					<label>Clave del Grupo</label>
+							   					<input type="text" name="clave_grupo" class="form-control">
+							   				</div>
+							   			</div>
+							   			<!-- END DATOS DEL GRUPO -->
+							   		</div>
+							   		<!-- START FECHAS DE INICIO -->
+							   		<div class="row">
+							   			<div class="col-lg-3">
+							   				<label>Inscripciones entre las fechas:</label>
+							   			</div>
+							   			<div class="col-lg-3">
+							   				<input type="date" class="form-control" name="fecha_1">
+							   			</div>
+							   			<div class="col-lg-3">
+											<input type="date" class="form-control" name="fecha_2">
+							   			</div>
+							   		</div>
+							   		<!-- END FECHAS DE INICIO -->
+							   		<br></br>
+							   		<!-- START DATOS PROFESOR -->
+							   		<div class="row">
+							   			<div class="col-lg-3">
+							   				<label>RFC</label>
+											<input type="text" class="form-control" name="rfc" maxlength="13">
+							   			</div>
+							   			<div class="col-lg-3">
+							   				<label>Nombre</label>
+											<input type="text" name="nombre" class="form-control">
+							   			</div>
+							   			<div class="col-lg-3">
+							   				<label>Apellido Paterno</label>
+											<input type="text" class="form-control" name="apellido_paterno">
+							   			</div>
+							   		</div>
+							   		<div class="row">
+							   			<div class="col-lg-3">
+							   				<label>Grado de estudios</label>
+											<select name="grado_estudios" class="form-control">
+												<option value="5">Sin definir</option>
+												<option value="1">Licenciatura</option>
+												<option value="3">Maestría</option>
+												<option value="4">Doctorado</option>
+											</select>
+							   			</div>
+							   			<div class="col-lg-3">
+							   				<label>Género</label>
+							   				<select name="genero" class="form-control">
+							   					<option value="3">Sin definir</option>
+							   					<option value="1">Masculino</option>
+							   					<option value="2">Femenino</option>
+							   				</select>
+							   			</div>
+							   			<div class="col-lg-3">
+							   				<label>Turno</label>
+							   				<select name="turno" class="form-control">
+							   					<option value="4">Sin definir</option>
+							   					<option value="1">Matutino</option>
+							   					<option value="2">Vespertino</option>
+							   					<option value="3">Completo</option>
+							   				</select>
+							   			</div>
+							   		</div>
+							   		<!-- END DATOS PROFESOR -->
+							</div>
+							<div>
+								<button id="btn-limpiar" type="reset" class="btn btn-default">Limpiar Búsqueda</button>
+								<button id="btn-consultar" type="submit" class="btn btn-default">Consultar</button>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>		
+			</section>
+				
+				<!-- START DERECHOS -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="footer">
+							<p>2019 © SICCED</p>
+						</div>
+					</div>
+				</div>
+				<!-- END DERECHOS -->
+        </div>
+    </div>
+	<!-- END CONTENTS -->
+
+	<!-- jquery vendor -->
+	<script src="js/lib/jquery.min.js"></script>
+	<script src="js/lib/jquery.nanoscroller.min.js"></script>
+	<!-- nano scroller -->
+	<script src="js/lib/menubar/sidebar.js"></script>
+	<script src="js/lib/preloader/pace.min.js"></script>
+	<!-- sidebar -->
+	<!-- bootstrap -->
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/scripts.js"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/js/reports/query-functions.js"></script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Sistema de Control Escolar para Cursos y Diplomados</title>
+
+    <!-- ================= Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    
+    <!-- Styles -->
+    <link href="/css/lib/select2/select2.min.css" rel="stylesheet">
+    <link href="/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="/css/lib/menubar/sidebar.css" rel="stylesheet">
+    <link href="/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/lib/helper.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style type="text/css">
+		#mensaje {
+			visibility: hidden;
+		}
+	</style>
+    
+</head>
+<body>
+<div th:replace="/includes/head.html :: head_div1" />
+<div th:replace="/includes/head.html :: head_div2" />
+
+		<!-- Modal -->
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="d-flex align-items-center" id="proceso">
+					<h4 id="mensaje">algo</h4>
+						<div id="spin">
+							<strong>Agregando... &nbsp;</strong>
+							<div class="spinner-grow text-info" role="status"
+								aria-hidden="true"></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-body">Selecciona una accion</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal" id="limpiar">Agregar otra inscripcion</button>
+					<button type="button" class="btn btn-primary"
+						onclick="window.location.href ='/start'" id = "volver">Volver
+						a inicio</button>
+					<button type="button" class="btn btn-secondary"
+					data-dismiss="modal" id="revisar">Revisar Formulario</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- START CONTENTS -->
+	<div class="content-wrap">
+        <div class="main">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8 p-r-0 title-margin-right">
+                        <div class="page-header">
+                            <div class="page-title">
+	                                <h1>Registrar una inscripcion</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                    <div class="col-lg-4 p-l-0 title-margin-left">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Registrar una inscripcion</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                </div>
+                <!-- /# row -->
+                <section id="main-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-validation">
+                                    
+                                        <form class="form-valide" th:action="@{/AdministracionRegistroManual/registrarInscripcion}" method="POST"
+                                        id="registrarInscripcion">
+                                        
+                                        	<div class="form-group row">
+                                                <label class="col-lg-4 control-label" for="grupo">Clave del grupo <span class="text-danger">*</span></label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" id="grupo" name="grupo" style="width: 100%;"></select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 control-label" for="par">RFC del participante <span class="text-danger">*</span></label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" id="par" name="par" style="width: 100%;"></select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="cal">calificacion<span class="text-danger"></span></label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control" id="cal" name="cal" placeholder="Ingrese calificacion" maxlength = "3">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="ap">aprobado<span class="text-danger"></span></label>
+                                                <div class="col-lg-8">
+                                                      <input type="checkbox" name="ap" class="checkbox"> Se aprobó el curso<br>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            
+                                            <div class="form-group">
+        										<div class="col-sm-5 col-sm-offset-3">
+		                                           <button type="submit" class="btn btn-default"
+		                                           data-toggle="modal" data-target="#exampleModal">Capturar</button>
+                                             	</div>
+    										</div>
+                                    </form>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+<!-- END CONTENTS -->
+
+    <!-- jquery vendor -->
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/jquery.nanoscroller.min.js"></script>
+    <!-- nano scroller -->
+    <script src="/js/lib/menubar/sidebar.js"></script>
+    <script src="/js/lib/preloader/pace.min.js"></script>
+    <!-- sidebar -->
+    <!-- bootstrap -->
+    <!-- Select2 -->
+    <script src="/js/lib/select2/select2.full.min.js"></script>
+    <script src="/js/lib/form-validation/jquery.validate.min.js"></script>
+    <script src="/js/lib/form-validation/jquery.validate-init.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"> </script>
+    <script>
+		$(document).ready(function() {
+			
+			var texto = "[[${datos.jsonG}]]";
+			
+			var grupos = texto.split(",");
+			
+		    var select = document.getElementById( 'grupo' );
+
+		    for( grupo in grupos ) {
+		        select.add( new Option( grupos[grupo] ) );
+		    };
+		    
+			var rfctext = "[[${datos.jsonP}]]";
+			
+			var rfcs = rfctext.split(",");
+			
+			var nc = "[[${datos.jsonNombres}]]";
+			
+			var ncs = nc.split(",");
+			
+		    var select2 = document.getElementById( 'par' );
+
+			i = 0;
+		    
+		    for( rfc in rfcs ) {
+		        select2.add( new Option(ncs[i] + " " + rfcs[rfc], rfcs[rfc]) );
+		        i = i + 1;
+		    };
+			
+			$.fn.bootstrapValidator.validators.calif = {
+			        validate: function(validator, $field, options) {
+			            var value = $field.val();
+			            
+			            if(value > 100){
+			            	return false;
+			            }
+
+			            return true;
+			        }
+			};
+			
+			$.fn.bootstrapValidator.validators.clave = {
+			        validate: function(validator, $field, options) {
+			            var value = $field.val();
+
+			            if (value === '') {
+			            	var elem = $(document.createElement('h4'))
+				               .attr('id','mensaje').html("Error : faltan rellenar campos obligatorios");
+							  $('#mensaje').replaceWith(elem);
+							  $("#mensaje").css("color","red");
+							  $("#mensaje").css("visibility","visible");
+							  $('#spin').css("visibility","hidden");
+							  $("#volver").css("visibility","hidden");
+							  $("#limpiar").css("visibility","hidden");
+							  $("#revisar").css("visibility","visible");
+							  $("#mensaje").css("visibility","visible");
+			                return false;
+			            }
+
+			            return true;
+			        }
+			};
+			
+			$.fn.bootstrapValidator.validators.rfc = {
+			        validate: function(validator, $field, options) {
+			            var value = $field.val();
+			            return true;
+			        }
+			};
+		
+			$('#registrarInscripcion').bootstrapValidator({
+		        feedbackIcons: {
+		            valid: 'glyphicon glyphicon-ok',
+		            invalid: 'glyphicon glyphicon-remove',
+		            validating: 'glyphicon glyphicon-refresh'
+		        },
+		        fields: {
+		        	grupo: {
+		                validators: {
+		                    clave: {
+		                        message: ' Verifica que el formato sea como el del ejemplo '
+		                    }, 
+		                    
+		                    notEmpty: {
+		                        message: ' No puede estar vacio '
+		                    }
+		                }
+		            },
+		            
+		            par : {
+		        		validators: {
+		        			rfc: {
+		                        message: ' Verifica que el rfc sea correcto '
+		                    },
+		        	
+		                    notEmpty: {
+		                        message: ' El rfc no puede estar vacio '
+		                    }
+		        	
+		        		}
+		        	},
+		        	
+		        	cal : {
+		        		validators: {
+		        			digits: {
+		                        message: ' Utiliza solo numeros '
+		                    },
+		                    
+		                    calif : {
+		                    	message: ' Calificacion de 0 a 10'
+		                    }
+		        	
+		        		}
+		        	}
+		            
+		        }
+		    }).on('success.form.bv', function(eve) {
+	            eve.preventDefault();
+				
+	            let datos = {
+						idGrupo : $("#grupo").val(),
+						idProfesor : $("#par").val(),
+						calificacion : $("#cal").val(),
+						aprobado : $('input[type="checkbox"]').is(":checked")
+					}
+					$.ajax({
+						type : "POST",
+						contentType : "application/json",
+						url : '/AdministracionRegistroManual/registrarInscripcion',
+						data : JSON.stringify(datos),
+						beforeSend : function() {
+							// setting a timeout
+							$("#mensaje").css("visibility","hidden")
+							$('#spin').css("visibility","visible")
+									
+						},
+						error : function(status) {
+							$('#spin').css("visibility","hidden")
+							var elem = $(document.createElement('h4'))
+							               .attr('id','mensaje').html("Error : Revisa que sean correctas las claves de asesor y grupo");
+							$('#mensaje').replaceWith(elem);
+							$("#mensaje").css("color","red");
+							$("#limpiar").css("visibility","hidden");
+							$("#volver").css("visibility","hidden");
+							$("#revisar").css("visibility","visible");
+							$("#mensaje").css("visibility","visible");
+						},
+						success : function(respuesta, status) {
+							if(respuesta.message == "¡El participante ya había sido registrado con este grupo!"){
+								$('#spin').css("visibility","hidden")
+								var elem = $(document.createElement('h4'))
+								               .attr('id','mensaje').html("Error : El participante ya había sido registrado con este grupo");
+								$('#mensaje').replaceWith(elem);
+								$("#mensaje").css("color","red");
+								$("#limpiar").css("visibility","hidden");
+								$("#volver").css("visibility","hidden");
+								$("#revisar").css("visibility","visible");
+								$("#mensaje").css("visibility","visible");
+							} else{
+								$('#spin').css("visibility","hidden")
+								var elem = $(document.createElement('h4'))
+								               .attr('id','mensaje').html(respuesta.message);
+								$('#mensaje').replaceWith(elem);
+								$("#mensaje").css("color","green");
+								$("#revisar").css("visibility","hidden");
+								$("#limpiar").css("visibility","visible");
+								$("#volver").css("visibility","visible");
+								$("#mensaje").css("visibility","visible");
+							}
+						}
+					});
+
+
+	            
+	            var $form     = $(eve.target),
+	                validator = $form.data('bootstrapValidator');
+	        });
+
+			$("#limpiar").click(function(event) {
+				$("#registrarInscripcion")[0].reset();
+			});
+
+		});
+	</script>
+</body>
+</html>
